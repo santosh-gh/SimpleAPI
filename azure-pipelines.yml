@@ -33,16 +33,19 @@ steps:
   inputs:
     command: 'test'
 
-- task: PublishBuildArtifacts@1
+- task: DotNetCoreCLI@2
+  displayName: 'Publish and zip'
   inputs:
-    PathtoPublish: '$(System.DefaultWorkingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+    command: publish
+    publishWebProjects: False
+    projects: $(SolutionPath)
+    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    zipAfterPublish: True
 
-- task: AzureRmWebAppDeployment@4
+- task: AzureWebApp@1
+  displayName: 'Deploy Azure Web App'
   inputs:
-    ConnectionType: 'AzureRM'
     azureSubscription: 'Pay-As-You-Go(fdc7ca00-0892-48b6-a411-cf66b3774c76)'
+    appName: homeapp221
     appType: 'webApp'
-    WebAppName: 'homeapp221'
-    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    package: $(Build.ArtifactStagingDirectory)/**/*.zip
