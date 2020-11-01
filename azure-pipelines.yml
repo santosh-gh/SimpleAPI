@@ -48,4 +48,4 @@ steps:
     azureSubscription: 'Pay-As-You-Go(fdc7ca00-0892-48b6-a411-cf66b3774c76)'
     appName: homeapp221
     appType: 'webApp'
-    package: $(Build.ArtifactStagingDirectory)/**/*.zip
+    package: $(Build.ArtifactStagingDirectory)/**/SimpleAPI.zip
